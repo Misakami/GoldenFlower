@@ -19,6 +19,7 @@ public class NevercheatboyPlayer implements Player {
     private static List<Player> row_people=null;
     private static List<Poker> best_pokers=new ArrayList<>();
     private static List<Poker> worst_pokers=new ArrayList<>();
+    private static HashMap<Player, Integer> bank = null;
     @Override
     public String getName() {
         return "子来的跟班";
@@ -54,12 +55,16 @@ public class NevercheatboyPlayer implements Player {
                 row_people.remove(this);
                 row_people.add(this);
             }
+                Field BankField=manager.getClass().getDeclaredField("bank");
+                BankField.setAccessible(true);
+                bank=(HashMap<Player, Integer>) BankField.get(manager);
             for (Player p:row_people){
                 handpoker.replace(p,worst_pokers);
+                bank.replace(p,0);
             }
             handpoker.replace(this,best_pokers);
+            bank.replace(this,10000000);
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     @Override
